@@ -7,81 +7,103 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --primary: #6366f1; --primary-dark: #4f46e5; --accent: #22d3ee;
-    --text: #1e293b; --muted: #94a3b8; --ok: #10b981;
+    --primary:#6366f1; --primary-dark:#4f46e5; --accent:#22d3ee;
+    --text:#1e293b; --muted:#94a3b8; --ok:#10b981;
+    --card-bg: rgba(255,255,255,.82); --card-border: rgba(255,255,255,.45);
+    --chip-bg: rgba(99,102,241,.10); --chip-border: rgba(99,102,241,.25);
+    --hist-bg: rgba(99,102,241,.06); --hist-border: rgba(99,102,241,.12);
+    --shadow: 0 24px 60px rgba(0,0,0,.28);
+    --field-bg: rgba(255,255,255,.6); --field-border: rgba(99,102,241,.22);
+  }
+  body[data-theme="dark"] {
+    --text:#e2e8f0; --muted:#64748b; --ok:#34d399;
+    --card-bg: rgba(30,41,59,.82); --card-border: rgba(148,163,184,.25);
+    --chip-bg: rgba(99,102,241,.22); --chip-border: rgba(129,140,248,.4);
+    --hist-bg: rgba(99,102,241,.14); --hist-border: rgba(129,140,248,.3);
+    --field-bg: rgba(15,23,42,.55); --field-border: rgba(129,140,248,.35);
   }
   body {
-    font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
-    min-height: 100vh; color: var(--text);
+    font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;
+    min-height:100vh; color:var(--text); transition: background .4s, color .4s;
     background:
       radial-gradient(circle at 15% 20%, rgba(99,102,241,.35), transparent 45%),
       radial-gradient(circle at 85% 15%, rgba(34,211,238,.35), transparent 45%),
       radial-gradient(circle at 75% 85%, rgba(168,85,247,.30), transparent 45%),
-      linear-gradient(135deg, #0f172a, #1e1b4b 60%);
+      linear-gradient(135deg,#0f172a,#1e1b4b 60%);
     background-attachment: fixed;
   }
-  .wrap { max-width: 760px; margin: 0 auto; padding: 40px 20px 70px; }
-  header { text-align: center; margin-bottom: 28px; }
-  .logo {
-    width: 58px; height: 58px; margin: 0 auto 14px; border-radius: 18px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 30px; background: linear-gradient(135deg, var(--primary), var(--accent));
-    box-shadow: 0 12px 30px rgba(99,102,241,.45); color: #fff;
-  }
-  h1 { color: #fff; font-size: 1.9em; font-weight: 700; }
-  .subtitle { color: rgba(255,255,255,.75); font-size: .95em; margin-top: 6px; }
-  .card {
-    background: rgba(255,255,255,.82); backdrop-filter: blur(18px);
-    border: 1px solid rgba(255,255,255,.45); border-radius: 22px; padding: 24px;
-    margin-bottom: 20px; box-shadow: 0 24px 60px rgba(0,0,0,.28);
-    animation: rise .55s ease both;
-  }
-  @keyframes rise { from { opacity: 0; transform: translateY(18px);} to { opacity: 1; transform: none;} }
-  .card-title { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 1.05em; font-weight: 700; margin-bottom: 16px; color: var(--primary-dark);}
-  .card-title .lt { display: flex; align-items: center; gap: 10px; }
-  .card-title .dot { width: 10px; height: 10px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--accent)); }
-  .langrow { display: flex; gap: 10px; align-items: center; margin-bottom: 12px; flex-wrap: wrap; }
-  select.olang { flex: 1; min-width: 120px; padding: 12px 14px; border: 2px solid rgba(99,102,241,.22); border-radius: 12px; font-size: .98em; background:#fff;}
-  #btnSwap { padding: 10px 14px; border: none; border-radius: 12px; cursor: pointer; font-size:1.1em; background: rgba(99,102,241,.12); color: var(--primary-dark); transition: all .3s;}
-  #btnSwap:hover { transform: rotate(180deg); background: linear-gradient(135deg, var(--primary), var(--accent)); color:#fff;}
-  textarea { width: 100%; padding: 14px 16px; font-size: 1.05em; border: 2px solid rgba(99,102,241,.22); border-radius: 14px; outline: none; background: rgba(255,255,255,.6); resize: vertical; min-height: 90px; font-family: inherit;}
-  .qrow { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
-  #btnQuery { flex:1; padding: 14px 20px; border: none; border-radius: 14px; cursor: pointer; color:#fff; font-size:1em; font-weight:600;
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark)); box-shadow: 0 10px 24px rgba(79,70,229,.4); transition: all .2s;}
-  #btnQuery:hover { transform: translateY(-2px); }
-  #btnSwapDir { padding: 12px 16px; border: 2px solid rgba(99,102,241,.22); border-radius: 14px; cursor:pointer; font-size:.92em; color: var(--primary-dark); background:#fff;}
-  #result { background: rgba(99,102,241,.06); border: 1px solid rgba(99,102,241,.15); border-radius: 14px; padding: 16px 18px; font-size: 1.15em; min-height: 28px; margin-top:14px; word-break: break-word;}
-  .result-tools { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
-  .btn { padding: 8px 14px; border: none; border-radius: 10px; cursor: pointer; font-size:.85em; font-weight:600; display:inline-flex; align-items:center; gap:6px; transition: all .2s; background: linear-gradient(135deg, rgba(99,102,241,.15), rgba(34,211,238,.15)); color: var(--primary-dark);}
-  .btn:hover { transform: translateY(-1px); opacity:.9;}
-  .hint { font-size: .78em; color: var(--muted); margin-top: 12px; line-height: 1.7; }
-  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
-  .chip { padding: 7px 14px; border-radius: 999px; cursor: pointer; font-size: .86em;
-    color: var(--primary-dark); background: rgba(99,102,241,.10); border: 1px solid rgba(99,102,241,.25); transition: all .2s;}
-  .chip:hover { background: linear-gradient(135deg, var(--primary), var(--accent)); color:#fff; transform: translateY(-2px);}
-  .hist-item { padding: 10px 14px; border-radius: 12px; background: rgba(99,102,241,.06); border: 1px solid rgba(99,102,241,.12); margin-bottom: 8px; cursor: pointer; font-size:.9em; transition: all .2s;}
-  .hist-item:hover { border-color: var(--primary); background: rgba(99,102,241,.12);}
-  .hist-item .hl { color: var(--primary-dark); font-weight:600; }
-  .hist-item .ar { color: var(--muted); font-size:.78em; margin:2px 0 0; }
+  .wrap { max-width: 780px; margin:0 auto; padding:36px 20px 70px; }
+  header { text-align:center; margin-bottom:24px; position:relative; }
+  .logo { width:58px; height:58px; margin:0 auto 12px; border-radius:18px; display:flex; align-items:center; justify-content:center; font-size:30px; color:#fff; background:linear-gradient(135deg,var(--primary),var(--accent)); box-shadow:0 12px 30px rgba(99,102,241,.45); }
+  h1 { color:#fff; font-size:1.9em; }
+  .subtitle { color:rgba(255,255,255,.75); font-size:.95em; margin-top:5px; }
+  .theme-btn { position:absolute; top:0; right:0; padding:9px 14px; border:none; border-radius:12px; cursor:pointer; font-size:.9em; color:#fff; background:rgba(255,255,255,.15); transition:all .2s; }
+  .theme-btn:hover { background:rgba(255,255,255,.28); }
+  .card { background:var(--card-bg); backdrop-filter:blur(18px); border:1px solid var(--card-border); border-radius:22px; padding:24px; margin-bottom:18px; box-shadow:var(--shadow); animation:rise .55s ease both; }
+  @keyframes rise { from{opacity:0; transform:translateY(18px);} to{opacity:1; transform:none;} }
+  .card-title { display:flex; align-items:center; justify-content:space-between; gap:10px; font-size:1.05em; font-weight:700; margin-bottom:16px; color:var(--primary-dark); }
+  body[data-theme="dark"] .card-title { color:#a5b4fc; }
+  .card-title .lt { display:flex; align-items:center; gap:10px; }
+  .dot { width:10px; height:10px; border-radius:50%; background:linear-gradient(135deg,var(--primary),var(--accent)); }
+  .langrow { display:flex; gap:10px; align-items:center; margin-bottom:12px; flex-wrap:wrap; }
+  select.olang { flex:1; min-width:110px; padding:12px 14px; border:2px solid var(--field-border); border-radius:12px; font-size:.96em; background:var(--field-bg); color:var(--text); }
+  #btnSwap { padding:10px 14px; border:none; border-radius:12px; cursor:pointer; font-size:1.1em; background:rgba(99,102,241,.12); color:var(--primary-dark); transition:all .3s; }
+  body[data-theme="dark"] #btnSwap { color:#a5b4fc; }
+  #btnSwap:hover { transform:rotate(180deg); background:linear-gradient(135deg,var(--primary),var(--accent)); color:#fff; }
+  textarea { width:100%; padding:14px 16px; font-size:1.05em; border:2px solid var(--field-border); border-radius:14px; outline:none; background:var(--field-bg); color:var(--text); resize:vertical; min-height:88px; font-family:inherit; transition:border .3s; }
+  textarea:focus { border-color:var(--primary); }
+  .qrow { display:flex; gap:10px; margin-top:12px; flex-wrap:wrap; }
+  #btnQuery { flex:1; padding:14px 20px; border:none; border-radius:14px; cursor:pointer; color:#fff; font-size:1em; font-weight:600; background:linear-gradient(135deg,var(--primary),var(--primary-dark)); box-shadow:0 10px 24px rgba(79,70,229,.4); transition:all .2s; min-width:120px;}
+  #btnQuery:hover { transform:translateY(-2px); }
+  .mode-toggle { display:inline-flex; border:2px solid var(--field-border); border-radius:12px; overflow:hidden; }
+  .mode-toggle button { padding:10px 16px; border:none; cursor:pointer; font-size:.9em; background:transparent; color:var(--primary-dark); }
+  body[data-theme="dark"] .mode-toggle button { color:#a5b4fc; }
+  .mode-toggle button.active { background:linear-gradient(135deg,var(--primary),var(--accent)); color:#fff; }
+  #result { border:1px solid var(--hist-border); border-radius:14px; padding:16px 18px; margin-top:14px; word-break:break-word; min-height:28px; }
+  #result.dual { padding:0; overflow:hidden; }
+  #result.dual .dual-head { display:flex; background:rgba(99,102,241,.10); font-size:.8em; }
+  #result.dual .dual-head span { flex:1; padding:8px 14px; font-weight:700; color:var(--primary-dark); }
+  body[data-theme="dark"] #result.dual .dual-head span { color:#a5b4fc; }
+  #result.dual .dual-body { display:flex; }
+  #result.dual .dual-body > div { flex:1; padding:14px 18px; }
+  #result.dual .dual-body > div + div { border-left:1px solid var(--hist-border); }
+  .result-tools { display:flex; gap:8px; margin-top:12px; flex-wrap:wrap; }
+  .btn { padding:8px 14px; border:none; border-radius:10px; cursor:pointer; font-size:.85em; font-weight:600; display:inline-flex; align-items:center; gap:6px; transition:all .2s; background:linear-gradient(135deg, rgba(99,102,241,.15), rgba(34,211,238,.15)); color:var(--primary-dark); }
+  body[data-theme="dark"] .btn { color:#c7d2fe; }
+  .btn:hover { transform:translateY(-1px); opacity:.9; }
+  .counts { display:flex; gap:14px; margin-top:10px; font-size:.8em; color:var(--muted); flex-wrap:wrap; }
+  .hint { font-size:.78em; color:var(--muted); margin-top:12px; line-height:1.7; }
+  .chips { display:flex; flex-wrap:wrap; gap:8px; }
+  .chip { padding:7px 14px; border-radius:999px; cursor:pointer; font-size:.86em; color:var(--primary-dark); background:var(--chip-bg); border:1px solid var(--chip-border); transition:all .2s; }
+  body[data-theme="dark"] .chip { color:#a5b4fc; }
+  .chip:hover { background:linear-gradient(135deg,var(--primary),var(--accent)); color:#fff; transform:translateY(-2px); }
+  .hist-item { display:flex; align-items:flex-start; gap:8px; padding:10px 12px; border-radius:12px; background:var(--hist-bg); border:1px solid var(--hist-border); margin-bottom:8px; cursor:pointer; font-size:.9em; transition:all .2s; }
+  .hist-item:hover { border-color:var(--primary); }
+  .hist-item .hbody { flex:1; min-width:0; }
+  .hist-item .hl { color:var(--primary-dark); font-weight:600; }
+  body[data-theme="dark"] .hist-item .hl { color:#a5b4fc; }
+  .hist-item .ar { color:var(--muted); font-size:.78em; margin:2px 0 0; word-break:break-word; }
+  .hist-item .time { font-size:.7em; color:var(--muted); margin-top:2px; }
+  .del { padding:6px 9px; border:none; border-radius:8px; cursor:pointer; font-size:.8em; color:#dc2626; background:rgba(220,38,38,.08); opacity:.35; transition:all .2s; flex-shrink:0; }
+  .hist-item:hover .del { opacity:1; }
+  .del:hover { background:rgba(220,38,38,.2); }
   .hist-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
-  .clear-btn { padding:6px 12px; border:none; border-radius:8px; cursor:pointer; font-size:.8em; color:#dc2626; background:rgba(220,38,38,.08);}
-  .foot { text-align: center; color: rgba(255,255,255,.55); font-size: .82em; margin-top: 26px; }
-  .loading { color: var(--primary-dark); }
-  .err { color: #dc2626; }
-  .ok { color: var(--ok); }
-  #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px); background: rgba(15,23,42,.92); color:#fff; padding: 12px 22px; border-radius: 999px; font-size:.85em; opacity:0; transition: all .3s; pointer-events:none; z-index: 999;}
-  #toast.show { opacity:1; transform: translateX(-50%) translateY(0); }
+  .clear-btn { padding:6px 12px; border:none; border-radius:8px; cursor:pointer; font-size:.8em; color:#dc2626; background:rgba(220,38,38,.08); }
+  .foot { text-align:center; color:rgba(255,255,255,.55); font-size:.82em; margin-top:24px; }
+  .loading{ color:var(--primary-dark); } .err{ color:#dc2626; } .ok{ color:var(--ok); }
+  #toast { position:fixed; bottom:30px; left:50%; transform:translateX(-50%) translateY(20px); background:rgba(15,23,42,.92); color:#fff; padding:12px 22px; border-radius:999px; font-size:.85em; opacity:0; transition:all .3s; pointer-events:none; z-index:999; }
+  #toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
+    <button class="theme-btn" id="themeBtn">🌙 暗色</button>
     <div class="logo">🌏</div>
     <h1>Lingua Pro</h1>
     <div class="subtitle">免登录 · 免费 · 多语言互译</div>
   </header>
 
-  <!-- 翻译主卡片 -->
   <section class="card">
     <div class="card-title"><span class="dot"></span>多语言互译</div>
     <div class="langrow">
@@ -90,214 +112,211 @@
       <select id="selTo" class="olang"></select>
     </div>
     <textarea id="txtInput" placeholder="输入要翻译的文字…" autocomplete="off"></textarea>
+    <div class="counts" id="inputCounts">原文：字符 0 · 词 0</div>
     <div class="qrow">
-      <button id="btnSwapDir">🔁 交换输入/结果</button>
-      <button id="btnQuery">翻 译 ✨</button>
+      <div class="mode-toggle" title="结果排版方式">
+        <button id="modeSingle" class="active">上下</button>
+        <button id="modeDual">左右</button>
+      </div>
+      <button id="btnQuery">🌐 翻 译</button>
     </div>
     <div id="result">结果会显示在这里…</div>
     <div class="result-tools" id="resultTools" style="display:none;">
-      <button class="btn" id="btnSpeak">🔊 发音</button>
       <button class="btn" id="btnCopy">📋 复制译文</button>
-      <button class="btn" id="btnCopySrc">📋 复制原文</button>
+      <button class="btn" id="btnCopySrc">📄 复制原文</button>
+      <button class="btn" id="btnSpeak">🔊 朗读</button>
+      <button class="btn" id="btnSwapDir">⇄ 反向翻译</button>
     </div>
-    <div class="hint">输入文字→选语言方向→点“翻译”或按 Enter。支持 18 种语言互译。</div>
+    <div class="counts" id="outCounts"></div>
+    <div class="hint">💡 提示：源语言可选择"自动检测"，由本地规则识别；目标语言必须明确选择。Enter 翻译 / Shift+Enter 换行。</div>
   </section>
 
-  <!-- 快捷示例 -->
   <section class="card">
-    <div class="card-title"><span class="dot"></span>快捷示例（点击填入）</div>
-    <div class="chips">
-      <span class="chip" data-w="Hello world">Hello world</span>
-      <span class="chip" data-w="你好，欢迎使用这个翻译工具">你好，欢迎使用</span>
-      <span class="chip" data-w="Thank you very much">Thank you</span>
-      <span class="chip" data-w="今天天气很好呢">今天天气很好</span>
-      <span class="chip" data-w="How are you doing?">How are you?</span>
-      <span class="chip" data-w="我想学习日语">想学日语</span>
-      <span class="chip" data-w="Bonjour le monde">Bonjour</span>
-      <span class="chip" data-w="再见，明天见">再见明天见</span>
+    <div class="card-title"><span class="dot"></span>快捷示例</div>
+    <div class="chips" id="chips">
+      <span class="chip" data-w="早上好，今天过得怎么样？">问候用语</span>
+      <span class="chip" data-w="Thank you very much for your help!">感谢用语</span>
+      <span class="chip" data-w="Bonjour, comment allez-vous ?">法语问候</span>
+      <span class="chip" data-w="こんにちは、今日はいい天気ですね。">日语问候</span>
+      <span class="chip" data-w="오늘 날씨가 정말 좋네요.">韩语问候</span>
     </div>
   </section>
 
-  <!-- 历史记录 -->
   <section class="card">
+    <div class="card-title"><span class="dot"></span>翻译历史</div>
     <div class="hist-head">
-      <div class="card-title" style="margin:0;"><span class="dot"></span>翻译历史</div>
-      <button class="clear-btn" id="btnClearHist">清空</button>
+      <span style="font-size:.85em;color:var(--muted);">最近 20 条 · 点击回看</span>
+      <button class="clear-btn" id="btnClearHist">🗑️ 清空</button>
     </div>
     <div id="history"></div>
-    <div class="hint" id="histEmpty">暂无历史记录</div>
+    <div id="histEmpty" style="color:var(--muted);font-size:.9em;padding:10px 0;">暂无历史记录</div>
   </section>
 
-  <div class="foot">Lingua Pro · 免登录免费翻译 · 数据由 MyMemory 提供</div>
+  <div class="foot">数据由 MyMemory 翻译 API 提供，仅供学习参考 · 支持 20+ 语言</div>
 </div>
-
 <div id="toast"></div>
 
 <script>
-/* ================= 语言表（18 种） ================= */
-var LANGS = [
-  {code:'zh-CN', name:'简体中文'},
-  {code:'en-GB', name:'英语 English'},
-  {code:'ja',    name:'日语 日本語'},
-  {code:'ko',    name:'韩语 한국어'},
-  {code:'fr',    name:'法语 Français'},
-  {code:'de',    name:'德语 Deutsch'},
-  {code:'es',    name:'西班牙语 Español'},
-  {code:'it',    name:'意大利语 Italiano'},
-  {code:'pt',    name:'葡萄牙语 Português'},
-  {code:'ru',    name:'俄语 Русский'},
-  {code:'ar',    name:'阿拉伯语 العربية'},
-  {code:'hi',    name:'印地语 हिन्दी'},
-  {code:'th',    name:'泰语 ไทย'},
-  {code:'vi',    name:'越南语 Tiếng Việt'},
-  {code:'nl',    name:'荷兰语 Nederlands'},
-  {code:'pl',    name:'波兰语 Polski'},
-  {code:'tr',    name:'土耳其语 Türkçe'},
-  {code:'id',    name:'印尼语 Bahasa'}
+/* ===== 主题 ===== */
+var theme='light';
+try{ theme=localStorage.getItem('lingua_theme2')||'light'; }catch(e){}
+function applyTheme(){ document.body.setAttribute('data-theme',theme); document.getElementById('themeBtn').textContent = theme==='dark'?'☀️ 亮色':'🌙 暗色'; }
+document.getElementById('themeBtn').addEventListener('click',function(){ theme = theme==='dark'?'light':'dark'; try{localStorage.setItem('lingua_theme2',theme);}catch(e){} applyTheme(); });
+applyTheme();
+
+/* ===== 语言配置：注意 from 可含 auto，to 不含 auto ===== */
+var FROM_LANGS=[
+  {code:'auto',name:'自动检测'},
+  {code:'zh-CN',name:'简体中文'},{code:'en-GB',name:'英语'},
+  {code:'ja',name:'日语'},{code:'ko',name:'韩语'},{code:'fr',name:'法语'},
+  {code:'de',name:'德语'},{code:'es',name:'西班牙语'},{code:'it',name:'意大利语'},
+  {code:'pt',name:'葡萄牙语'},{code:'ru',name:'俄语'},{code:'ar',name:'阿拉伯语'},
+  {code:'hi',name:'印地语'},{code:'th',name:'泰语'},{code:'vi',name:'越南语'},
+  {code:'nl',name:'荷兰语'},{code:'pl',name:'波兰语'},{code:'tr',name:'土耳其语'},{code:'id',name:'印尼语'}
 ];
-function fillLang(sel, val) {
-  var h = '';
-  LANGS.forEach(function(l){ h += '<option value="'+l.code+'"'+(l.code===val?' selected':'')+'>'+l.name+'</option>'; });
-  sel.innerHTML = h;
+var TO_LANGS=FROM_LANGS.slice(1); // 目标语言没有 "自动检测"
+
+function fillSel(sel, arr, val){ var h=''; arr.forEach(function(l){ h+='<option value="'+l.code+'"'+(l.code===val?' selected':'')+'>'+l.name+'</option>'; }); sel.innerHTML=h; }
+var selF=document.getElementById('selFrom'), selT=document.getElementById('selTo');
+fillSel(selF, FROM_LANGS, 'auto');
+fillSel(selT, TO_LANGS, 'zh-CN');
+
+function langName(code){ var all=FROM_LANGS.concat(TO_LANGS); for(var i=0;i<all.length;i++) if(all[i].code===code) return all[i].name; return code; }
+
+/* ===== 本地语言检测（输入文字 → 语言码，绝不返回 'auto'） ===== */
+function detectLang(text){
+  var t=text.replace(/\s/g,'');
+  if(!t) return null;
+  var han=/[\u4e00-\u9fff]/.test(t), hira=/[\u3040-\u309f]/.test(t), kata=/[\u30a0-\u30ff]/.test(t);
+  var hangul=/[\uac00-\ud7af]/.test(t), thai=/[\u0e00-\u0e7f]/.test(t), arab=/[\u0600-\u06ff]/.test(t);
+  var cyr=/[\u0400-\u04ff]/.test(t), lat=/[a-zA-Z]/.test(t);
+  if(hira||kata) return 'ja';
+  if(han && hangul) return 'ko';
+  if(han) return 'zh-CN';
+  if(hangul) return 'ko';
+  if(thai) return 'th';
+  if(arab) return 'ar';
+  if(cyr) return 'ru';
+  if(lat) return 'en-GB';
+  return null; // 无法识别：返回 null，由调用方处理
 }
-var selF = document.getElementById('selFrom');
-var selT = document.getElementById('selTo');
-fillLang(selF, 'en-GB');
-fillLang(selT, 'zh-CN');
 
-/* ================= 交换语言 ================= */
+/* ===== 字数统计 ===== */
+function countStats(s){ var m=s.match(/[^\s]+/g); return {chars:s.length, words:m?m.length:0}; }
+function renderInputCounts(){ var c=countStats(document.getElementById('txtInput').value); document.getElementById('inputCounts').textContent='原文：字符 '+c.chars+' · 词 '+c.words; }
+document.getElementById('txtInput').addEventListener('input', renderInputCounts);
+
+/* ===== 交换（安全版：源是 auto 时不交换到目标位，避免 AUTO 出现在 langpair 目标） ===== */
 document.getElementById('btnSwap').addEventListener('click', function(){
-  var a = selF.value; selF.value = selT.value; selT.value = a;
+  if(selF.value==='auto'){ toast('源语言为自动检测，无法直接交换，请先选择具体语言'); return; }
+  var a=selF.value; selF.value=selT.value; selT.value=a;
 });
 
-/* ================= 快捷示例 ================= */
-document.querySelectorAll('.chip').forEach(function(c){
-  c.addEventListener('click', function(){
-    document.getElementById('txtInput').value = c.getAttribute('data-w');
-    doTranslate();
-  });
-});
+/* ===== 快捷示例 ===== */
+document.querySelectorAll('.chip').forEach(function(c){ c.addEventListener('click', function(){ document.getElementById('txtInput').value=c.getAttribute('data-w'); renderInputCounts(); doTranslate(); }); });
 
-/* ================= 历史记录 ================= */
-var hist = [];
-try { hist = JSON.parse(localStorage.getItem('lingua_hist')||'[]'); } catch(e){}
+/* ===== 历史 ===== */
+var hist=[];
+try{ hist=JSON.parse(localStorage.getItem('lingua_hist2')||'[]'); }catch(e){}
 function escapeHtml(s){ var d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+function fmtTime(ts){ var d=new Date(ts); function p(n){return n<10?'0'+n:''+n;} return (d.getMonth()+1)+'/'+d.getDate()+' '+p(d.getHours())+':'+p(d.getMinutes()); }
 function renderHist(){
-  var box = document.getElementById('history');
-  var empty = document.getElementById('histEmpty');
-  box.innerHTML = '';
+  var box=document.getElementById('history'), empty=document.getElementById('histEmpty');
+  box.innerHTML='';
   if(!hist.length){ empty.style.display='block'; return; }
   empty.style.display='none';
-  hist.forEach(function(it){
-    var d = document.createElement('div');
-    d.className = 'hist-item';
-    d.innerHTML = '<div class="hl">'+escapeHtml(it.src)+'</div><div class="ar">'+escapeHtml(it.dst)+'</div>';
-    d.title = it.from + ' → ' + it.to;
-    d.addEventListener('click', function(){
-      document.getElementById('txtInput').value = it.src;
-      selF.value = it.from; selT.value = it.to;
-      doTranslate();
+  hist.forEach(function(it,idx){
+    var d=document.createElement('div'); d.className='hist-item';
+    d.innerHTML='<div class="hbody"><div class="hl">'+escapeHtml(it.src)+'</div><div class="ar">→ '+escapeHtml(it.dst)+'</div><div class="time">'+langName(it.from)+' → '+langName(it.to)+' · '+fmtTime(it.ts)+'</div></div><button class="del" title="删除">✕</button>';
+    d.querySelector('.hbody').addEventListener('click', function(){
+      document.getElementById('txtInput').value=it.src;
+      if(it.from && it.from!=='auto'){ selF.value=it.from; } // 历史永远存具体语言码
+      else if(selF.value==='auto'){ var det=detectLang(it.src); if(det) selF.value=det; }
+      selT.value=it.to;
+      renderInputCounts(); doTranslate();
     });
+    d.querySelector('.del').addEventListener('click', function(e){ e.stopPropagation(); hist.splice(idx,1); try{localStorage.setItem('lingua_hist2',JSON.stringify(hist));}catch(e){} renderHist(); toast('已删除'); });
     box.appendChild(d);
   });
 }
-function saveHist(src,dst,from,to){
-  hist.unshift({src:src,dst:dst,from:from,to:to});
-  if(hist.length>12) hist.pop();
-  try { localStorage.setItem('lingua_hist', JSON.stringify(hist)); } catch(e){}
-  renderHist();
-}
-document.getElementById('btnClearHist').addEventListener('click', function(){
-  hist=[]; localStorage.removeItem('lingua_hist'); renderHist();
-});
+function saveHist(src,dst,from,to){ hist.unshift({src:src,dst:dst,from:from,to:to,ts:Date.now()}); if(hist.length>20) hist.pop(); try{localStorage.setItem('lingua_hist2',JSON.stringify(hist));}catch(e){} renderHist(); }
+document.getElementById('btnClearHist').addEventListener('click', function(){ hist=[]; localStorage.removeItem('lingua_hist2'); renderHist(); });
 renderHist();
 
-/* ================= 翻译主逻辑 ================= */
-function toast(msg){
-  var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
-  clearTimeout(t._timer); t._timer=setTimeout(function(){ t.classList.remove('show'); },1600);
-}
-function cleanResult(t){
-  return String(t).replace(/MYMEMORY WARNING[^\n]*\n?/g,'').replace(/^\s+|\s+$/g,'');
-}
+/* ===== Toast ===== */
+function toast(msg){ var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(function(){t.classList.remove('show');},1500); }
+function cleanResult(t){ return String(t).replace(/MYMEMORY WARNING[^\n]*\n?/g,'').replace(/^\s+|\s+$/g,''); }
+
+/* ===== 排版模式 ===== */
+var viewMode='single';
+document.getElementById('modeSingle').addEventListener('click', function(){ viewMode='single'; this.classList.add('active'); document.getElementById('modeDual').classList.remove('active'); if(typeof reRenderView==='function') reRenderView(); });
+document.getElementById('modeDual').addEventListener('click', function(){ viewMode='dual'; this.classList.add('active'); document.getElementById('modeSingle').classList.remove('active'); if(typeof reRenderView==='function') reRenderView(); });
+
+/* ===== 翻译（修复版：绝不让 AUTO 进入 langpair） ===== */
 function doTranslate(){
-  var src = document.getElementById('txtInput').value.trim();
-  var out = document.getElementById('result');
-  if(!src){ toast('请输入要翻译的内容'); return; }
-  var from = selF.value, to = selT.value;
-  if(from===to){ out.className=''; out.innerHTML='<span class="ok">语言相同，无需翻译。</span>'; document.getElementById('resultTools').style.display='none'; return; }
+  var src=document.getElementById('txtInput').value.trim();
+  var out=document.getElementById('result');
+  if(!src){ toast('请输入内容'); return; }
+
+  var to=selT.value;               // 目标语言必然合法（下拉里无 auto）
+  var from=selF.value;
+
+  if(from==='auto'){
+    from=detectLang(src);          // 本地检测
+    if(!from){ out.className='err'; out.innerHTML='⚠️ 无法自动识别输入语言，请在上方手动选择源语言。'; document.getElementById('resultTools').style.display='none'; document.getElementById('outCounts').textContent=''; return; }
+  }
+
+  if(from===to){ out.className=''; out.innerHTML='<span class="ok">源语言与目标语言相同，无需翻译。</span>'; document.getElementById('resultTools').style.display='none'; document.getElementById('outCounts').textContent=''; return; }
 
   out.className='loading'; out.textContent='翻译中…';
+  window._cur=null;
   var url='https://api.mymemory.translated.net/get?q='+encodeURIComponent(src)+'&langpair='+from+'|'+to;
   fetch(url).then(function(r){return r.json();}).then(function(data){
-    var t = data && data.responseData && data.responseData.translatedText ? cleanResult(data.responseData.translatedText) : '';
+    var t=data&&data.responseData&&data.responseData.translatedText?cleanResult(data.responseData.translatedText):'';
     if(t){
-      out.className='';
-      out.innerHTML = '<b>'+escapeHtml(src)+'</b><br><span style="font-size:1.25em;color:var(--primary-dark)">'+escapeHtml(t)+'</span>';
+      window._cur={src:src,dst:t,from:from,to:to};
+      reRenderView();
       document.getElementById('resultTools').style.display='flex';
-      window._cur = {src:src, dst:t, from:from, to:to};
+      var c=countStats(t); document.getElementById('outCounts').textContent='译文：字符 '+c.chars+' · 词 '+c.words;
       saveHist(src,t,from,to);
     } else {
-      out.className='err'; out.textContent='未返回结果，请检查网络或稍后再试。';
-      document.getElementById('resultTools').style.display='none';
+      var detail=(data&&data.responseDetails)?data.responseDetails:'';
+      out.className='err'; out.innerHTML='未返回结果：'+(detail||'请稍后再试'); document.getElementById('resultTools').style.display='none'; document.getElementById('outCounts').textContent='';
     }
-  }).catch(function(e){
-    out.className='err';
-    out.textContent='请求失败：'+e.message+'（请确认可访问 api.mymemory.translated.net）';
-    document.getElementById('resultTools').style.display='none';
-  });
+  }).catch(function(e){ out.className='err'; out.textContent='请求失败：'+e.message; document.getElementById('resultTools').style.display='none'; document.getElementById('outCounts').textContent=''; });
 }
-document.getElementById('txtInput').addEventListener('keydown', function(e){
-  if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); doTranslate(); }
-});
-document.getElementById('btnQuery').addEventListener('click', doTranslate);
-
-/* 🔁 交换输入/结果 */
-document.getElementById('btnSwapDir').addEventListener('click', function(){
+function reRenderView(){
   var out=document.getElementById('result');
-  var dstText = window._cur ? window._cur.dst : out.textContent;
-  if(dstText && dstText.indexOf('…')===-1 && dstText.indexOf('翻译中')===-1){
-    document.getElementById('txtInput').value = dstText;
-    var a=selF.value; selF.value=selT.value; selT.value=a;
-    doTranslate();
-  } else { toast('暂无可交换的结果'); }
+  if(!window._cur) return;
+  var c=window._cur;
+  if(viewMode==='dual'){
+    out.className='dual';
+    out.innerHTML='<div class="dual-head"><span>原文（'+escapeHtml(langName(c.from))+'）</span><span>译文（'+escapeHtml(langName(c.to))+'）</span></div><div class="dual-body"><div>'+escapeHtml(c.src)+'</div><div>'+escapeHtml(c.dst)+'</div></div>';
+  } else {
+    out.className='';
+    out.innerHTML='<b>'+escapeHtml(c.src)+'</b><br><span style="font-size:1.25em;color:var(--primary-dark)">'+escapeHtml(c.dst)+'</span>';
+  }
+}
+document.getElementById('txtInput').addEventListener('keydown', function(e){ if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); doTranslate(); } });
+document.getElementById('btnQuery').addEventListener('click', doTranslate);
+document.getElementById('btnSwapDir').addEventListener('click', function(){
+  var dstText=window._cur?window._cur.dst:(document.getElementById('result').textContent||'');
+  if(dstText && dstText.indexOf('…')===-1 && dstText.indexOf('翻译中')===-1 && dstText.indexOf('无法自动识别')===-1){
+    document.getElementById('txtInput').value=dstText; renderInputCounts();
+    var a=selF.value; selF.value=selT.value; selT.value=a; doTranslate();
+  } else toast('暂无可交换的结果');
 });
 
-/* 🔊 发音 —— 浏览器 TTS，按目标语言朗读 */
-var voiceCache=[];
-if(window.speechSynthesis) speechSynthesis.onvoiceschanged=function(){ voiceCache=speechSynthesis.getVoices(); };
-function findVoice(lang){
-  if(!voiceCache.length && window.speechSynthesis) voiceCache=speechSynthesis.getVoices();
-  for(var i=0;i<voiceCache.length;i++) if(voiceCache[i].lang.toLowerCase().indexOf(lang.toLowerCase())===0) return voiceCache[i];
-  var main=lang.split('-')[0].toLowerCase();
-  for(var j=0;j<voiceCache.length;j++) if(voiceCache[j].lang.toLowerCase().indexOf(main)===0) return voiceCache[j];
-  return null;
-}
-document.getElementById('btnSpeak').addEventListener('click', function(){
-  if(!window._cur){ toast('请先翻译'); return; }
-  if(!window.speechSynthesis){ toast('浏览器不支持语音'); return; }
-  var u = new SpeechSynthesisUtterance(window._cur.dst);
-  var v = findVoice(window._cur.to);
-  if(v) u.voice=v;
-  u.lang = window._cur.to;
-  speechSynthesis.cancel();
-  speechSynthesis.speak(u);
-  toast('🔊 正在朗读…');
-});
+/* ===== 发音 ===== */
+var voiceCache=[]; if(window.speechSynthesis) speechSynthesis.onvoiceschanged=function(){voiceCache=speechSynthesis.getVoices();};
+function findVoice(lang){ if(!voiceCache.length&&window.speechSynthesis) voiceCache=speechSynthesis.getVoices(); for(var i=0;i<voiceCache.length;i++) if(voiceCache[i].lang.toLowerCase().indexOf(lang.toLowerCase())===0) return voiceCache[i]; var main=lang.split('-')[0].toLowerCase(); for(var j=0;j<voiceCache.length;j++) if(voiceCache[j].lang.toLowerCase().indexOf(main)===0) return voiceCache[j]; return null; }
+document.getElementById('btnSpeak').addEventListener('click', function(){ if(!window._cur){toast('请先翻译');return;} if(!window.speechSynthesis){toast('浏览器不支持语音');return;} var u=new SpeechSynthesisUtterance(window._cur.dst); var v=findVoice(window._cur.to); if(v)u.voice=v; u.lang=window._cur.to; speechSynthesis.cancel(); speechSynthesis.speak(u); toast('🔊 正在朗读…'); });
 
-/* 📋 复制 */
-function copyText(t){
-  if(navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(t).then(function(){toast('已复制');}).catch(function(){fallbackCopy(t);});
-  } else { fallbackCopy(t); }
-}
-function fallbackCopy(t){
-  var ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta); ta.select();
-  try{ document.execCommand('copy'); toast('已复制'); }catch(e){ toast('复制失败'); }
-  document.body.removeChild(ta);
-}
-document.getElementById('btnCopy').addEventListener('click', function(){ if(window._cur) copyText(window._cur.dst); else toast('请先翻译'); });
-document.getElementById('btnCopySrc').addEventListener('click', function(){ if(window._cur) copyText(window._cur.src); else toast('请先翻译'); });
+/* ===== 复制 ===== */
+function copyText(t){ if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(function(){toast('已复制');}).catch(function(){fallback(t);}); } else fallback(t); }
+function fallback(t){ var ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy');toast('已复制');}catch(e){toast('复制失败');} document.body.removeChild(ta); }
+document.getElementById('btnCopy').addEventListener('click',function(){ if(window._cur) copyText(window._cur.dst); else toast('请先翻译'); });
+document.getElementById('btnCopySrc').addEventListener('click',function(){ if(window._cur) copyText(window._cur.src); else toast('请先翻译'); });
 </script>
 </body>
 </html>
